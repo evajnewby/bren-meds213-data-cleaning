@@ -1,0 +1,320 @@
+---
+title: "HW2-Data Cleaning"
+author: "Eva Newby"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+## Load Libraries and Read-in Data
+```{r}
+#| message: false  
+
+# Load packages
+library(tidyverse)
+library(here)
+```
+
+```{r}
+#| message: false  
+# Read in the snow_survey csv data that's been already processed for the Snow_cover column
+survey_csv <- read_csv(here("data", "processed", "snow_cover.csv"))
+
+```
+
+## Instructions - 3 steps
+### 1. Clean the Water_cover column to transform it into the correct data type and respect expectations for a percentage.
+```{r}
+# View the data to see what needs cleaning
+glimpse(survey_csv)
+
+# Count the occurrences of each unique value in the water column
+survey_csv %>%
+  count(Water_cover)
+```
+
+There are several non-numeric values that need to be addressed; namely, "-", and "."
+
+Let's start with the "-" values.
+```{r}
+# View the "-" values
+survey_csv %>%
+  filter(Water_cover == "-") %>%
+  View()
+```
+
+```{r}
+# Set "-" to "NA" based on metadata
+watersurvey_fixed <- survey_csv %>% 
+  mutate(Water_cover = ifelse(Water_cover == "-", NA, Water_cover))
+
+# Check to see if it worked (df will come up empty if it did)
+watersurvey_fixed %>%
+  filter(Water_cover == "-") %>%
+  View()
+```
+
+Now, onto the "." values. 
+```{r}
+# View the "." values
+watersurvey_fixed %>%
+  filter(Water_cover == ".") %>%
+  View()
+```
+
+```{r}
+# Set "." to "NA" based on metadata
+watersurvey_fixed <- watersurvey_fixed %>% 
+  mutate(Water_cover = ifelse(Water_cover == ".", NA, Water_cover))
+
+# Check to see if it worked (df will come up empty if it did)
+watersurvey_fixed %>%
+  filter(Water_cover == ".") %>%
+  View()
+```
+
+Now that we've straightened out the non-numeric columns, let's move onto our data types. 
+```{r}
+# View the datatype for the water column
+class(watersurvey_fixed$Water_cover)
+```
+
+This returns a 'character', meaning that we need to change the type to numeric. Now that we've addressed all our non-numeric columns, let's change the data type. 
+```{r}
+# Change data type from character to numeric
+watersurvey_fixed <- watersurvey_fixed %>% 
+  mutate(Water_cover = as.numeric(Water_cover))
+
+# Check 
+class(watersurvey_fixed$Water_cover)
+```
+
+Represent expectations to a percentage:
+```{r}
+# verify all values are under 100
+watersurvey_fixed %>% 
+  filter(Water_cover > 100) %>% 
+  View()
+```
+
+Based on this result, there's a line that has Water_cover = 353, which isn't a valid percentage.
+```{r}
+# Convert 353 to NA
+watersurvey_fixed <- watersurvey_fixed %>% 
+  mutate(Water_cover = ifelse(Water_cover > 100, NA, Water_cover))
+
+# Check
+watersurvey_fixed %>% 
+  filter(Water_cover > 100) 
+```
+
+### 2. Clean the Land_cover column to transform it into the correct data type and respect expectations for a percentage
+
+```{r}
+# Count the occurrences of each unique value in the land column
+survey_csv %>%
+  count(Land_cover)
+```
+
+There are several non-numeric values that need to be addressed; namely, "-", and "." as well as negative values. 
+
+Let's start with the "-" values.
+```{r}
+# View the "-" values
+watersurvey_fixed %>%
+  filter(Land_cover == "-") %>%
+  View()
+```
+
+```{r}
+# Set "-" to "NA" based on metadata
+landsurvey_fixed <- watersurvey_fixed %>% 
+  mutate(Land_cover = ifelse(Land_cover == "-", NA, Land_cover))
+
+# Check to see if it worked (df will come up empty if it did)
+landsurvey_fixed %>%
+  filter(Land_cover == "-") %>%
+  View()
+```
+
+Now, onto the "." values. 
+```{r}
+# View the "." values
+landsurvey_fixed %>%
+  filter(Land_cover == ".") %>%
+  View()
+```
+
+```{r}
+# Set "." to "NA" based on metadata
+landsurvey_fixed <- landsurvey_fixed %>% 
+  mutate(Land_cover = ifelse(Land_cover == ".", NA, Land_cover))
+
+# Check to see if it worked (df will come up empty if it did)
+landsurvey_fixed %>%
+  filter(Land_cover == ".") %>%
+  View()
+```
+
+Address negative values: 
+```{r}
+# View specified negative values in Land_cover. 
+landsurvey_fixed %>% 
+  filter(Land_cover == '-100') %>%
+  View()
+```
+
+```{r}
+# View specified negative values in Land_cover.
+landsurvey_fixed %>% 
+  filter(Land_cover == '-298') %>%
+  View()
+```
+
+```{r}
+# Change those values to 0
+landsurvey_fixed <- landsurvey_fixed %>% 
+  mutate(Land_cover = ifelse(Land_cover == "-100", 
+                             "0", Land_cover))
+         
+landsurvey_fixed <- landsurvey_fixed %>% 
+  mutate(Land_cover = ifelse(Land_cover == "-298", 
+                             "0", Land_cover))
+
+# Check
+# Count the occurrences of each unique value in the land column
+landsurvey_fixed %>%
+  count(Land_cover)
+```
+
+Now that we've straightened out the non-numeric columns, let's move onto our data types. 
+```{r}
+# View the datatype for the water column
+class(landsurvey_fixed$Land_cover)
+```
+
+This returns a 'character', meaning that we need to change the type to numeric. Now that we've addressed all our non-numeric columns, let's change the data type. 
+```{r}
+# Change data type from character to numeric
+landsurvey_fixed <- landsurvey_fixed %>% 
+  mutate(Land_cover = as.numeric(Land_cover))
+
+# Check 
+class(landsurvey_fixed$Land_cover)
+```
+
+Represent expectations to a percentage:
+
+```{r}
+# verify all values are under 100
+landsurvey_fixed %>% 
+  filter(Land_cover > 100) %>% 
+  View()
+```
+
+Based on this result, there's no values above 100 in the Land_cover column.
+
+### 3. Use the relationship between the three cover columns (Snow, Water, Land) to infer missing values where possible and recompute the Total_cover column as needed **need to review, all below from Claude AI**
+
+```{r}
+# Convert Total_cover to numeric
+landsurvey_fixed <- landsurvey_fixed %>% 
+  mutate(Total_cover = as.numeric(Total_cover))
+
+# Check the data type of Total_cover
+class(landsurvey_fixed$Total_cover)
+```
+
+```{r}
+# Find missing values and compute based on Water_cover, Snow_cover, and Land_cover
+landsurvey_fixed <- landsurvey_fixed %>% 
+  mutate(Snow_cover = case_when(
+      is.na(Snow_cover) & !is.na(Water_cover) & !is.na(Land_cover) ~ 
+        100 - (Water_cover + Land_cover),
+      TRUE ~ Snow_cover),
+      
+        Water_cover = case_when(
+      !is.na(Snow_cover) & is.na(Water_cover) & !is.na(Land_cover) ~ 
+        100 - (Snow_cover + Land_cover),
+      TRUE ~ Water_cover
+    ),
+    
+    Land_cover = case_when(
+      !is.na(Snow_cover) & !is.na(Water_cover) & is.na(Land_cover) ~ 
+        100 - (Snow_cover + Water_cover),
+      TRUE ~ Land_cover
+    )) %>% 
+  # Make Total_cover NA if the other 3 columns are NA
+    mutate(Total_cover = case_when(is.na(Snow_cover) & is.na(Water_cover) & is.na(Land_cover) ~ NA_real_,
+      TRUE ~ Total_cover
+    ))
+```
+
+```{r}
+# Recompute Total_cover based on component values
+landsurvey_fixed <- landsurvey_fixed %>%
+  
+  # make a temporary column for the actual sum of components
+  mutate(Calculated_total = rowSums(select(., Snow_cover, Water_cover, Land_cover), na.rm = FALSE),
+    
+    # Update Total_cover based on the Calculated_total
+    Total_cover = case_when(
+      # If all components have values, use their sum
+      !is.na(Calculated_total) ~ Calculated_total,
+      # Otherwise keep existing Total_cover
+      TRUE ~ Total_cover
+    )) %>% 
+  # Remove temporary column
+  select(-Calculated_total)
+
+```
+
+```{r}
+# Normalize the values so they sum to 100%
+landsurvey_fixed <- landsurvey_fixed %>%
+  mutate(
+    # Only apply to rows where all components are present but don't sum to 100
+    need_normalization = !is.na(Snow_cover) & !is.na(Water_cover) & !is.na(Land_cover) & abs((Snow_cover + Water_cover + Land_cover) - 100) > 0.01,
+    
+    # Calculate the sum for normalization
+    component_sum = ifelse(need_normalization, Snow_cover + Water_cover + Land_cover, 100),
+    
+    # Normalize components to sum to 100
+    Snow_cover = ifelse(need_normalization, round(Snow_cover * 100 / component_sum, 1), Snow_cover),
+    Water_cover = ifelse(need_normalization, round(Water_cover * 100 / component_sum, 1), Water_cover),
+    Land_cover = ifelse(need_normalization, round(Land_cover * 100 / component_sum, 1), Land_cover),
+    
+    # Set Total_cover to 100 for normalized rows
+    Total_cover = ifelse(need_normalization, 100, Total_cover)
+  ) %>%
+  # Remove temporary columns
+  select(-need_normalization, -component_sum)
+```
+
+```{r}
+# Check if there are any Total_cover values that are not 100
+landsurvey_fixed %>% 
+  filter(Total_cover != 100) %>% 
+  View()
+```
+
+There are still some Total_cover values that are less than 100, and they all contain a row with only the "Snow_cover data". As there is no specification in the metadata about what to do with NA values in both Water_cover and Land_cover, I will...
+- remove the rows?
+- convert the Snow_cover in this column to NAs?
+- or split the remaining totals between the two columns? IDK, time for bed and will figure out tomorrow. 
+```{r}
+
+```
+
+### Save as .csv
+The code should output a csv file named 'all_cover_fixed_YOURNAME.csv' in the data/processed folder.
+```{r}
+# Define the output directory path explicitly
+output_dir <- "C:/MEDS/EDS213-database/bren-meds213-data-cleaning/data/processed"
+
+# Save the CSV file
+write_csv(landsurvey_fixed, file.path(output_dir, "all_cover_fixed_EvaNewby.csv"))
+```
+
+
+

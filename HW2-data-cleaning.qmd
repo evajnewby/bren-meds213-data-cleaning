@@ -1,0 +1,76 @@
+---
+title: "HW2-Data Cleaning"
+author: "Eva Newby"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+## Instructions - 3 steps
+### 1. Clean the Water_cover column to transform it into the correct data type and respect expectations for a percentage
+
+```{r}
+#| message: false  
+
+# Load packages
+library(tidyverse)
+
+# load file names
+datadir_raw <- file.path("data","raw")
+
+datadir_processed <- file.path("data", "processed/")
+
+species_file <- "ASDN_Daily_species.csv"
+
+snowsurvey_file <- "ASDN_Snow_survey.csv"
+
+# Import the species
+snowsurvey_csv <- read_csv(file.path(datadir_raw, snowsurvey_file))
+```
+
+```{r}
+# View the data to see what needs cleaning
+glimpse(snowsurvey_csv)
+
+# Count the occurrences of each unique value in the water column
+snowsurvey_csv %>%
+  count(Water_cover)
+```
+
+There are several non-numeric columns that need to be addressed; namely, "-", and ".". 
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+# View the datatype for the water column
+class(snowsurvey_csv$Water_cover)
+```
+
+This returns a 'character', meaning that we need to change the type to numeric. Now that we've addressed all our non-numeric columns, let's change the data type. 
+```{r}
+# Change data type from character to numeric
+
+```
+
+```{r}
+
+```
+
+### 2. Clean the Land_cover column to transform it into the correct data type and respect expectations for a percentage
+
+```{r}
+
+```
+
+### 3. Use the relationship between the three cover columns (Snow, Water, Land) to infer missing values where possible and recompute the Total_cover column as needed
+
+```{r}
+
+```
+
