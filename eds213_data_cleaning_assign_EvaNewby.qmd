@@ -1,6 +1,7 @@
 ---
 title: "HW2-Data Cleaning"
 author: "Eva Newby"
+date: "April 16, 2025"
 format: html
 editor: visual
 editor_options: 
@@ -214,8 +215,7 @@ landsurvey_fixed %>%
 
 Based on this result, there's no values above 100 in the Land_cover column.
 
-### 3. Use the relationship between the three cover columns (Snow, Water, Land) to infer missing values where possible and recompute the Total_cover column as needed **need to review, all below from Claude AI**
-
+### 3. Use the relationship between the three cover columns (Snow, Water, Land) to infer missing values where possible and recompute the Total_cover column as needed 
 ```{r}
 # Convert Total_cover to numeric
 landsurvey_fixed <- landsurvey_fixed %>% 
@@ -251,7 +251,7 @@ landsurvey_fixed <- landsurvey_fixed %>%
 ```
 
 ```{r}
-# Recompute Total_cover based on component values
+# Recompute Total_cover based on th 3 component values
 landsurvey_fixed <- landsurvey_fixed %>%
   
   # make a temporary column for the actual sum of components
@@ -298,16 +298,20 @@ landsurvey_fixed %>%
   View()
 ```
 
-There are still some Total_cover values that are less than 100, and they all contain a row with only the "Snow_cover data". As there is no specification in the metadata about what to do with NA values in both Water_cover and Land_cover, I will...
-- remove the rows?
-- convert the Snow_cover in this column to NAs?
-- or split the remaining totals between the two columns? IDK, time for bed and will figure out tomorrow. 
+There are still some Total_cover values that are less than 100, and they all contain a row with only the "Snow_cover data". As there is no specification in the metadata about what to do with NA values in both Water_cover and Land_cover, I will set anything that Total_cover does not = 100 to NA. This way, researchers can go back and make edit when necessary and not delete any of the component data. 
 ```{r}
+# anything that total_cover didn't equal 100 is an NA
+landsurvey_fixed <- landsurvey_fixed %>%
+  mutate(Total_cover = case_when(!is.na(Total_cover) & Total_cover != 100 ~ NA_real_, TRUE ~ Total_cover))
 
+# Recheck if there are any Total_cover values that are not 100
+landsurvey_fixed %>% 
+  filter(Total_cover != 100) %>% 
+  View()
 ```
 
 ### Save as .csv
-The code should output a csv file named 'all_cover_fixed_YOURNAME.csv' in the data/processed folder.
+The code should output a csv file. 
 ```{r}
 # Define the output directory path explicitly
 output_dir <- "C:/MEDS/EDS213-database/bren-meds213-data-cleaning/data/processed"
@@ -315,6 +319,4 @@ output_dir <- "C:/MEDS/EDS213-database/bren-meds213-data-cleaning/data/processed
 # Save the CSV file
 write_csv(landsurvey_fixed, file.path(output_dir, "all_cover_fixed_EvaNewby.csv"))
 ```
-
-
 
