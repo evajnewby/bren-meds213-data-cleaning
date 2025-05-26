@@ -15,3 +15,76 @@ Data were not collected every year at all sites. Studies of the population ecolo
 Data on climatic conditions, prey abundance, and predators were also collected. Environmental data included weather stations that recorded daily climatic conditions, surveys of seasonal snowmelt, weekly sampling of terrestrial and aquatic invertebrates that are prey of shorebirds, live trapping of small mammals (alternate prey for shorebird predators), and daily counts of potential predators (jaegers, falcons, foxes). Detailed field methods for each year are available in the `ASDN_protocol_201X.pdf` files. All research was conducted under permits from relevant federal, state, and university authorities.
 
 See `01_ASDN_Readme.txt` provided in the [course data repository](https://github.com/UCSB-Library-Research-Data-Services/bren-meds213-spring-2024-class-data) for full metadata information about this data set.
+
+DATA & FILE OVERVIEW
+
+1. File List: <list all files (or folders, as appropriate for dataset 
+organization) contained in the dataset, with a brief description of their content>
+
+2. Relationship between files, if important:
+
+3. Additional related data collected that was not included in the current
+data package:
+
+4. Are there multiple versions of the dataset? 
+
+
+DATA-SPECIFIC INFORMATION FOR:
+
+For the file  data/processed/all_cover_fixed_EvaNewby.csv : 
+
+1. Number of variables: 11
+
+2. Number of cases/rows: 42,830
+
+3. Variable List: <list variable name(s), description(s), unit(s)and value 
+labels as appropriate for each>
+- Site: ASDN field sites are referred to by 4-letter codes in each of the data files.  General information on each site is given here.  Not all types of data are available for every site.
+- Year: YYYY Format, Year in which data were collected.
+- Date: Date of capture.
+- Plot: Study plot name.
+- Location: Unique site location identification code.
+- Snow_cover: Percent cover of snow, including slush.
+- Water_cover: Percent cover of water.
+- Land_cover: Percent cover of exposed land.
+- Total_cover:	Total sum (to check the above percents; should always sum to 100).
+- Observer:	Person who conducted the survey.
+- Notes:  Free-text field for relevant comments or contextual information from the field.
+
+5. Missing data codes: <list code/symbol and definition>
+-    NA: Not applicable or not available.
+-    Blank, "" or "-" : No data recorded.
+
+7. Specialized formats or other abbreviations used:
+- Site: A standardized four-letter code indicating the ASDN field site where data were collected (e.g., barr, nome, east). Each code corresponds to a specific geographic location
+- Date: Recorded in YYYY-MM-DD ISO format. Represents the exact day of the survey or observation.
+- Plot: Name or code of the study plot within the field site where the survey occurred. Plot names may include numeric or alphanumeric identifiers and are unique within each site.
+- Location: A unique location identifier within the plot or site, used to distinguish between different micro-sites, subplots, or snow survey transects. May be used for repeated measurements over time.
+- Snow_cover, Water_cover, Land_cover: Visual estimates of percent surface cover (0–100%) for snow/slush, standing or pooled water, and exposed land, respectively. These fields are expected to be mutually exclusive and collectively exhaustive.
+- Total_cover: The sum of the three cover types (Snow_cover, Water_cover, and Land_cover), which must equal 100.
+- Observer: Person who conducted the survery, listed as first initial followed by last name. For example: Eva Newby would be "enewby".
+
+SHARING/ACCESS INFORMATION
+
+1. Licenses/restrictions placed on the data:
+
+2. Links to publications that cite or use the data:
+
+3. Links to other publicly accessible locations of the data:
+
+4. Links/relationships to ancillary data sets: <any supplementary data sources 
+that support analysis or classification of the datasets, eg., plant taxonomy table.)>
+
+This dataset is part of the Arctic Shorebird Demographics Network (ASDN) and is related to several ancillary data files that provide supporting information:
+- `site.csv` – Provides full names, geographic locations, and metadata for each 4-letter ASDN site code.
+- `personnel.csv` – Contains information on field observers, including full names, affiliations, and dates of site involvement.
+- `Study_Plot (KMZ)` – Google Earth-compatible file showing the spatial boundaries of plots referenced in the Plot and Location fields.
+- `Snow_survey.csv` (raw version) – The original source file for snow, water, and land cover observations before processing and formatting.
+
+6. Was data derived from another source? If yes, list source(s): <list citations 
+to original sources>
+- This processed dataset (all_cover_fixed_EvaNewby.csv) was derived from the raw ASDN Snow_survey data file.
+- The original source is: Arctic Shorebird Demographics Network. "ASDN_Snow_survey.csv" (1993–2014). NSF Arctic Data Center. https://arcticdata.io
+
+7. Recommended citation for the project:
+- Lanctot, R.B., Brown, S.C., and Sandercock, B.K. (2017). Arctic Shorebird Demographics Network. NSF Arctic Data Center. [https://arcticdata.io/catalog/view/doi:10.18739/A2222R68W]
