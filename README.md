@@ -16,20 +16,39 @@ Data on climatic conditions, prey abundance, and predators were also collected. 
 
 See `01_ASDN_Readme.txt` provided in the [course data repository](https://github.com/UCSB-Library-Research-Data-Services/bren-meds213-spring-2024-class-data) for full metadata information about this data set.
 
-DATA & FILE OVERVIEW
+## DATA & FILE OVERVIEW
 
-1. File List: <list all files (or folders, as appropriate for dataset 
-organization) contained in the dataset, with a brief description of their content>
+1. File List:
+ - data folder: contains raw and processed data for the project
+  - processed folder
+   - snow_survey_fixed.csv: Cleaned records of species (birds and mammals) encountered during field work each day at each site via the code in data_cleaning.qmd.
+   - species_presence.csv: Cleaned records of snow cover remaining at the site via the code in data_cleaning.qmd.
+  - raw folder
+    - ASDN_Daily_species.csv: Record of the species (birds and mammals) encountered during field work each day at each site
+    - ASDN_Snow_survey.csv: Periodic records of snow cover remaining at the site
+    - 01_ASDN_Readme.txt: See "01_ASDN_readme.txt" for detailed data author and contact information.
+ - docs folder: Contains web assets and libraries to render HTML documentation.
+  - data_cleaning_files
+    - libs
+      - bootstrap: styling
+      - clipboard: copy-to-clipboard functionality
+      - quarto-htm: core HTML rendering features
+ - data_cleaning.qmd
+ - README.md
 
 2. Relationship between files, if important:
+
+The .csv's in the raw folder are read in and processed within the the data_cleaning.qmd - which is directed to create snow_survey_fixed.csv and species_presence.csv.
 
 3. Additional related data collected that was not included in the current
 data package:
 
+NA
+
 4. Are there multiple versions of the dataset? 
+This data set is hosted on [NSF Artic Data Center](https://arcticdata.io/catalog/view/doi%3A10.18739%2FA2222R68W) - and has been published in 2016 - it is the only version hosted on the site and the version we are using in this project.
 
-
-DATA-SPECIFIC INFORMATION FOR:
+## DATA-SPECIFIC INFORMATION FOR:
 
 For the file  data/processed/all_cover_fixed_EvaNewby.csv : 
 
@@ -64,22 +83,28 @@ labels as appropriate for each>
 - Total_cover: The sum of the three cover types (Snow_cover, Water_cover, and Land_cover), which must equal 100.
 - Observer: Person who conducted the survery, listed as first initial followed by last name. For example: Eva Newby would be "enewby".
 
-SHARING/ACCESS INFORMATION
+## SHARING/ACCESS INFORMATION
 
-1. Licenses/restrictions placed on the data:
+1. Licenses/restrictions placed on the data: The data used in this project is licensed under the Creative Commons Attribution 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/.
 
 2. Links to publications that cite or use the data:
+All 16 uses of this data being cited can be found in the "Citations" link in the [host site](https://arcticdata.io/catalog/view/doi%3A10.18739%2FA2222R68W). Some example publication that cite the data are:
+- https://onlinelibrary.wiley.com/doi/10.1111/gcb.17356
+- https://link.springer.com/article/10.1007/s10646-023-02708-w
+- https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0270957
 
 3. Links to other publicly accessible locations of the data:
+
+- [DataONE.org](https://search.dataone.org/view/doi:10.18739%2FA2222R68W): https://search.dataone.org/view/doi:10.18739%2FA2222R68W
 
 4. Links/relationships to ancillary data sets: <any supplementary data sources 
 that support analysis or classification of the datasets, eg., plant taxonomy table.)>
 
 This dataset is part of the Arctic Shorebird Demographics Network (ASDN) and is related to several ancillary data files that provide supporting information:
-- `site.csv` – Provides full names, geographic locations, and metadata for each 4-letter ASDN site code.
-- `personnel.csv` – Contains information on field observers, including full names, affiliations, and dates of site involvement.
-- `Study_Plot (KMZ)` – Google Earth-compatible file showing the spatial boundaries of plots referenced in the Plot and Location fields.
-- `Snow_survey.csv` (raw version) – The original source file for snow, water, and land cover observations before processing and formatting.
+- site.csv – Provides full names, geographic locations, and metadata for each 4-letter ASDN site code.
+- personnel.csv – Contains information on field observers, including full names, affiliations, and dates of site involvement.
+- Study_Plot (KMZ) – Google Earth-compatible file showing the spatial boundaries of plots referenced in the Plot and Location fields.
+- Snow_survey.csv (raw version) – The original source file for snow, water, and land cover observations before processing and formatting.
 
 6. Was data derived from another source? If yes, list source(s): <list citations 
 to original sources>
